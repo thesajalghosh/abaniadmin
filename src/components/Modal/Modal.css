@@ -1,0 +1,38 @@
+.modal__container__whole {
+    position: fixed;
+    z-index: 1000000;
+    background-color: rgba(80, 79, 79, 0.754);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+  }
+  .modal__container {
+    background-color: black;
+    height: auto;
+    width: 90vw;
+    display: flex;
+    justify-content: center;
+    border-radius: 7px;
+    flex-direction: column;
+    padding: 10px 15px;
+  }
+  .modal__heading {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.3rem;
+    font-family: "Nunito Sans", sans-serif;
+    color: white;
+    border-bottom: 1px solid rgba(191, 190, 190, 0.295);
+    padding-bottom: 5px;
+  }
+  .modal__body__content {
+    color: white;
+    font-family: "Nunito Sans", sans-serif;
+    margin: 10px 0px;
+    text-align: center;
+    font-size: 1.1rem;
+  }
