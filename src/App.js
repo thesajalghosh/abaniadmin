@@ -7,6 +7,8 @@ import Home from './pages/home/Home';
 import AllProduct from './pages/productPage/AllProduct';
 import CreateProduct from './pages/productPage/CreateProduct';
 import ProductPage from './pages/productPage/ProductPage';
+import Orders from './pages/Orders/Orders';
+import PopularProduct from './pages/PopularProduct/PopularProduct';
 
 
 const App = () => {
@@ -34,6 +36,8 @@ const App = () => {
         <Route path="/product-page" element={<ProductPage/>}/>
         <Route path="/create-product" element={<CreateProduct/>}/>
         <Route path="/all-product" element={<AllProduct/>}/>
+        <Route path="/orders" element= {<Orders/>}/>
+        <Route path="/popular-product" element= {<PopularProduct/>}/>
       </Routes>
     </Router>
   );

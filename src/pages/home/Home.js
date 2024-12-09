@@ -10,7 +10,8 @@ const Home = () => {
       <div className="button-group">
         <button className="admin-button" onClick={()=> navigate("/category-page")}>Category</button>
         <button className="admin-button" onClick={()=> navigate("/product-page")}>Product</button>
-        <button className="admin-button" onClick={()=> navigate("/order-page")}>Order</button>
+        <button className="admin-button" onClick={()=> navigate("/orders")}>Order</button>
+        <button className="admin-button" onClick={()=> navigate("/popular-product")}>Popular product</button>
       </div>
     </div>
   );
