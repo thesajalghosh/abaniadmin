@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './Orders.css';
 
 const Orders = () => {
-    const [activeTab, setActiveTab] = useState('in-progress');
+    const [activeTab, setActiveTab] = useState('new-order');
     const [allOrders, setAllOrders] = useState([]);
 
     const handleTabClick = (tab) => {
@@ -40,11 +40,27 @@ const Orders = () => {
         getAllOrder();
     }, []);
 
-   
+    function isToday(dateString) {
+        const givenDate = new Date(dateString);
+        const today = new Date();
 
+        return (
+            givenDate.getFullYear() === today.getFullYear() &&
+            givenDate.getMonth() === today.getMonth() &&
+            givenDate.getDate() === today.getDate()
+        );
+    }
+
+    console.log("allOrders", allOrders)
     return (
         <div className="orders-container">
             <div className="tabs">
+                <button
+                    className={activeTab === 'new-order' ? 'tab active' : 'tab'}
+                    onClick={() => handleTabClick('new-order')}
+                >
+                    New Order
+                </button>
                 <button
                     className={activeTab === 'in-progress' ? 'tab active' : 'tab'}
                     onClick={() => handleTabClick('in-progress')}
@@ -71,10 +87,17 @@ const Orders = () => {
                 </button>
             </div>
             <div className="content">
+                {activeTab === 'new-order' &&
+                    <div>
+                        {allOrders && allOrders.filter(order => isToday(order.createdAt))?.map((order) => (
+                            <OrderCard order={order} status={"processing"} updateStatus={updateStatus} />
+                        ))}
+                    </div>
+                }
                 {activeTab === 'in-progress' &&
                     <div>
-                        { allOrders && allOrders.filter(order => order.orderStatus === "processing")?.map((order) => (
-                         <OrderCard order={order} status = {"processing"} updateStatus={updateStatus}/>
+                        {allOrders && allOrders.filter(order => order.orderStatus === "processing")?.map((order) => (
+                            <OrderCard order={order} status={"processing"} updateStatus={updateStatus} />
                         ))}
                     </div>
                 }
@@ -82,7 +105,7 @@ const Orders = () => {
                 {activeTab === 'completed' &&
                     <div>
                         {allOrders.filter(order => order.orderStatus === "completed").map((order) => (
-                            <OrderCard order={order} status = {"completed"} updateStatus={updateStatus}/>
+                            <OrderCard order={order} status={"completed"} updateStatus={updateStatus} />
                         ))}
                     </div>
                 }
@@ -90,7 +113,7 @@ const Orders = () => {
                 {activeTab === 'cancel-orders' &&
                     <div>
                         {allOrders.filter(order => order.orderStatus === "canceled").map((order) => (
-                            <OrderCard order={order} status = {"canceled"} updateStatus={updateStatus}/>
+                            <OrderCard order={order} status={"canceled"} updateStatus={updateStatus} />
                         ))}
                     </div>
                 }
@@ -98,7 +121,7 @@ const Orders = () => {
                 {activeTab === 'all-orders' &&
                     <div>
                         {allOrders.map((order) => (
-                            <OrderCard orderCard order={order} status = {"canceled"} updateStatus={updateStatus}/>
+                            <OrderCard orderCard order={order} status={"canceled"} updateStatus={updateStatus} />
                         ))}
                     </div>
                 }
@@ -109,59 +132,59 @@ const Orders = () => {
 
 export default Orders;
 
-const OrderCard = ({order,status, updateStatus})=> {
+const OrderCard = ({ order, status, updateStatus }) => {
 
     return (
         <div className="order-card" key={order._id}>
-        <div className="order-header">
-            <div>
-                <h3>Order ID: {order._id}</h3>
-                <p>User: {order.user.name}</p>
-                <p>Phone: {order.user.phone}</p>
-                <p>Email: {order.user.email}</p>
-            </div>
-            <div>
-                <p><strong>Payment:</strong> {order.paymentMode}</p>
-                <p><strong>Payment Status:</strong> {order.paymentStatus}</p>
-            </div>
-        </div>
-        <div className="order-address">
-            <p><strong>Address 1:</strong> {order.address.addressLine1}</p>
-            <p><strong>Address 2:</strong> {order.address.addressLine2}</p>
-            <p><strong>Address 3:</strong> {order.address.addressLine3}</p>
-            <p>Landmark: {order.address.landmark}</p>
-            <p>Pincode: {order.address.pincode}</p>
-        </div>
-        <div className="order-time">
-            <p><strong>Time Slot:</strong> {order.timeSlot.value}</p>
-            <p><strong>Booking Date:</strong> {order.bookingDate}</p>
-        </div>
-        <div className="order-items">
-            <h4>Items:</h4>
-            {order.items.map((item, index) => (
-                <div className="item" key={index}>
-                    <img src={item.product.url} alt={item.name} />
-                    <div>
-                        <h5>{item.name}</h5>
-                        <p>Price: ₹{item.price}</p>
-                        <p>Description: {item.description}</p>
-                    </div>
+            <div className="order-header">
+                <div>
+                    <h3>Order ID: {order?._id}</h3>
+                    <p>User: {order?.user?.name}</p>
+                    <p>Phone: {order?.user?.phone}</p>
+                    <p>Email: {order?.user?.email}</p>
                 </div>
-            ))}
-        </div>
-        <div className="order-footer">
-            <div className="order_footer_lower_part">
-                <p><strong>Total Price:</strong> ₹{order.totalPrice}</p>
-                <p><strong>Order Status:</strong> {order.orderStatus}</p>
+                <div>
+                    <p><strong>Payment:</strong> {order?.paymentMode}</p>
+                    <p><strong>Payment Status:</strong> {order?.paymentStatus}</p>
+                </div>
             </div>
-            <div className="order-status-buttons">
-                {status !==  "processing" && <button className="status-btn in-progress" onClick={() => updateStatus(order._id, 'processing')}>In Progress</button>}
-                {status !==  "completed" &&  <button className="status-btn completed" onClick={() => updateStatus(order._id, 'completed')}>Completed</button>}
-                {status !==  "canceled" && <button className="status-btn canceled" onClick={() => updateStatus(order._id, 'canceled')}>Canceled</button>}
+            <div className="order-address">
+                <p><strong>Address 1:</strong> {order?.address?.addressLine1}</p>
+                <p><strong>Address 2:</strong> {order?.address?.addressLine2}</p>
+                <p><strong>Address 3:</strong> {order?.address?.addressLine3}</p>
+                <p>Landmark: {order.address.landmark}</p>
+                <p>Pincode: {order.address.pincode}</p>
+            </div>
+            <div className="order-time">
+                <p><strong>Time Slot:</strong> {order.timeSlot.value}</p>
+                <p><strong>Booking Date:</strong> {order.bookingDate}</p>
+            </div>
+            <div className="order-items">
+                <h4>Items:</h4>
+                {(order?.items ?? [])?.map((item, index) => (
+                    <div className="item" key={index}>
+                        <img src={item?.product?.url} alt={item?.name} />
+                        <div>
+                            <h5>{item?.name}</h5>
+                            <p>Price: ₹{item?.price}</p>
+                            <p>Description: {item?.description}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="order-footer">
+                <div className="order_footer_lower_part">
+                    <p><strong>Total Price:</strong> ₹{order?.totalPrice}</p>
+                    <p><strong>Order Status:</strong> {order?.orderStatus}</p>
+                </div>
+                <div className="order-status-buttons">
+                    {status !== "processing" && <button className="status-btn in-progress" onClick={() => updateStatus(order?._id, 'processing')}>In Progress</button>}
+                    {status !== "completed" && <button className="status-btn completed" onClick={() => updateStatus(order?._id, 'completed')}>Completed</button>}
+                    {status !== "canceled" && <button className="status-btn canceled" onClick={() => updateStatus(order?._id, 'canceled')}>Canceled</button>}
+                </div>
             </div>
         </div>
-    </div>
     )
 }
 
-export {OrderCard}
+export { OrderCard }

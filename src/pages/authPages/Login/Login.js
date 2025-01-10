@@ -6,16 +6,15 @@ import './Login.css'; // Import the CSS file
 
 function Login() {
   const [role, setRole] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const navigate = useNavigate()
 
   const handleSubmit = async(event) => {
     event.preventDefault();
     console.log('process.env.REACT_APP_API:', process.env.REACT_APP_API);
     try {
-        const admin_login = await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/login`, {role, email, password})
-        console.log(admin_login)
+        const admin_login = await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/admin-login`, {role, name, phone})
         if(admin_login.data.success){
             localStorage.setItem("user", JSON.stringify(admin_login.data.user))
             localStorage.setItem("token", admin_login.data.token)
@@ -44,21 +43,21 @@ function Login() {
         </div>
         <div className="form-group">
           <label>
-            Email:
+            Phone :
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
           </label>
         </div>
         <div className="form-group">
           <label>
-            Password:
+            Name :
             <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </label>
         </div>
