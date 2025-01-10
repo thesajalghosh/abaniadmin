@@ -89,7 +89,7 @@ const Orders = () => {
             <div className="content">
                 {activeTab === 'new-order' &&
                     <div>
-                        {allOrders && allOrders.filter(order => isToday(order.createdAt))?.map((order) => (
+                        {allOrders && allOrders.filter(order => (isToday(order.createdAt) && order.orderStatus === "processing"))?.map((order) => (
                             <OrderCard order={order} status={"processing"} updateStatus={updateStatus} />
                         ))}
                     </div>
