@@ -9,6 +9,7 @@ import CreateProduct from './pages/productPage/CreateProduct';
 import ProductPage from './pages/productPage/ProductPage';
 import Orders from './pages/Orders/Orders';
 import PopularProduct from './pages/PopularProduct/PopularProduct';
+import AdminLayout from './components/AdminLayout/AdminLayout';
 
 
 const App = () => {
@@ -17,27 +18,33 @@ const App = () => {
     return localStorage.getItem('token') !== null;
   };
 
+  // Wrapper component to protect routes and inject AdminLayout
+  const ProtectedRoute = ({ children }) => {
+    return isAuthenticated() ? (
+      <AdminLayout>{children}</AdminLayout>
+    ) : (
+      <Navigate to="/login" />
+    );
+  };
+
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/home"
-          element={isAuthenticated() ? <Home /> : <Navigate to="/login" />}
-        />
+        
+        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/category-page" element={<ProtectedRoute><CategoryPage /></ProtectedRoute>} />
+        <Route path="/create-category" element={<ProtectedRoute><CreateCategory /></ProtectedRoute>} />
+        <Route path="/product-page" element={<ProtectedRoute><ProductPage /></ProtectedRoute>} />
+        <Route path="/create-product" element={<ProtectedRoute><CreateProduct /></ProtectedRoute>} />
+        <Route path="/all-product" element={<ProtectedRoute><AllProduct /></ProtectedRoute>} />
+        <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+        <Route path="/popular-product" element={<ProtectedRoute><PopularProduct /></ProtectedRoute>} />
+
         <Route
           path="*"
           element={<Navigate to={isAuthenticated() ? "/home" : "/login"} />}
         />
-
-        //All category page and url
-        <Route path="/category-page" element={<CategoryPage/>}/>
-        <Route path="/create-category" element={<CreateCategory/>}/>
-        <Route path="/product-page" element={<ProductPage/>}/>
-        <Route path="/create-product" element={<CreateProduct/>}/>
-        <Route path="/all-product" element={<AllProduct/>}/>
-        <Route path="/orders" element= {<Orders/>}/>
-        <Route path="/popular-product" element= {<PopularProduct/>}/>
       </Routes>
     </Router>
   );

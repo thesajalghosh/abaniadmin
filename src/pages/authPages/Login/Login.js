@@ -28,41 +28,53 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <h2>Abani Admin Login</h2>
-      <form onSubmit={handleSubmit} className="login-form">
-        <div className="form-group">
-          <label>
-            Role:
+    <div className="login-page">
+      <div className="glow-circle glow-circle-1"></div>
+      <div className="glow-circle glow-circle-2"></div>
+      <div className="login-container">
+        <div className="brand-header">
+          <span className="brand-subtitle">ADMIN CONTROL PANEL</span>
+          <h1 className="brand-title">THE ABANI</h1>
+        </div>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label>Role</label>
             <input
               type="text"
+              placeholder="e.g. Admin, Editor"
               value={role}
               onChange={(e) => setRole(e.target.value)}
+              required
             />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            Phone :
+          </div>
+          <div className="form-group">
+            <label>Name</label>
             <input
-              type="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            Name :
-            <input
-              type="name"
+              type="text"
+              placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
-          </label>
-        </div>
-        <button type="submit">Login</button>
-      </form>
+          </div>
+          <div className="form-group">
+            <label>Phone Number</label>
+            <div className="phone-input-wrapper">
+              <span className="phone-prefix">+91</span>
+              <input
+                type="tel"
+                placeholder="Enter 10-digit number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+          <button type="submit" className="login-button">
+            Login to Console
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

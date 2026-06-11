@@ -1,0 +1,197 @@
+.admin-layout-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #0b0217;
+  color: #e5e7eb;
+  font-family: 'Poppins', 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+
+.admin-sidebar {
+  width: 260px;
+  background: rgba(18, 8, 32, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  z-index: 100;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px 30px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 25px;
+}
+
+.brand-logo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #a78bfa;
+  box-shadow: 0 0 10px #8b5cf6;
+}
+
+.brand-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.menu-item.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25);
+}
+
+.menu-icon {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-footer {
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 48px;
+  background: rgba(220, 38, 38, 0.1) !important;
+  border: 1px solid rgba(220, 38, 38, 0.2) !important;
+  border-radius: 14px !important;
+  color: #ef4444 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  cursor: pointer;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+}
+
+.logout-btn:hover {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3) !important;
+}
+
+.admin-main-content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 40px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.admin-top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 35px;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #7c3aed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.profile-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #d1d5db;
+}
+
+.admin-page-body {
+  animation: pageFadeIn 0.3s ease-out;
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 992px) {
+  .admin-sidebar {
+    width: 80px;
+    padding: 30px 10px;
+    align-items: center;
+  }
+  .brand-name, .menu-label, .logout-btn span {
+    display: none;
+  }
+  .sidebar-brand {
+    justify-content: center;
+    padding: 0 0 20px 0;
+  }
+  .menu-item {
+    justify-content: center;
+    padding: 14px;
+  }
+  .admin-main-content {
+    margin-left: 80px;
+    padding: 24px;
+  }
+}
