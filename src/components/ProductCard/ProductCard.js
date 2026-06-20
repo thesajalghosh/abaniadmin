@@ -51,20 +51,20 @@ const ProductCard = ({
               </>
             ) : (
               <>
-                <div className="d-flex card__buttons">
+                <div className="card__buttons">
                   <button
                     className="btn btn-primary"
                     onClick={() => navigate(`/product/${element._id}`)}
                   >
-                    More Details
+                    Details
                   </button>
                   <button
                     className="btn btn-primary"
                     onClick={() => AddToCartHandeler(element)}
                   >
-                    Add to cart
+                    Add Cart
                   </button>
-                  <button  className="btn btn-primary">Delete</button>
+                  <button className="btn btn-danger">Delete</button>
                 </div>
               </>
             )}

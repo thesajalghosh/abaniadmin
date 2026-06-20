@@ -1,38 +1,190 @@
 /* Home.css */
 
-.home-container {
-    text-align: center;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: 50px auto;
+.dashboard-home {
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: pageFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dashboard-intro {
+  margin-bottom: 35px;
+}
+
+.dashboard-intro h2 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  background: var(--grad-cyan-blue);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dashboard-intro p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin: 0;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.dashboard-tile {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background gradient spot for subtle aesthetic */
+.dashboard-tile::after {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.15;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.tile-cyan::after { background: var(--accent-cyan); }
+.tile-purple::after { background: var(--accent-purple); }
+.tile-blue::after { background: var(--accent-blue); }
+.tile-pink::after { background: var(--accent-pink); }
+
+.dashboard-tile:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-md);
+}
+
+.dashboard-tile:hover::after {
+  opacity: 0.3;
+}
+
+/* Specific glowing highlights on hover */
+.dashboard-tile.tile-cyan:hover { box-shadow: 0 10px 30px rgba(0, 242, 254, 0.15); border-color: rgba(0, 242, 254, 0.3); }
+.dashboard-tile.tile-purple:hover { box-shadow: 0 10px 30px rgba(124, 58, 237, 0.15); border-color: rgba(124, 58, 237, 0.3); }
+.dashboard-tile.tile-blue:hover { box-shadow: 0 10px 30px rgba(79, 70, 229, 0.15); border-color: rgba(79, 70, 229, 0.3); }
+.dashboard-tile.tile-pink:hover { box-shadow: 0 10px 30px rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.3); }
+
+.tile-icon-wrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+.tile-cyan .tile-icon-wrapper { background: rgba(0, 242, 254, 0.1); color: var(--accent-cyan); }
+.tile-purple .tile-icon-wrapper { background: rgba(124, 58, 237, 0.1); color: var(--accent-purple); }
+.tile-blue .tile-icon-wrapper { background: rgba(79, 70, 229, 0.1); color: var(--accent-blue); }
+.tile-pink .tile-icon-wrapper { background: rgba(236, 72, 153, 0.1); color: var(--accent-pink); }
+
+.dashboard-tile:hover .tile-icon-wrapper {
+  transform: scale(1.1);
+}
+
+.tile-content h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #ffffff !important;
+}
+
+.tile-content p {
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.tile-action {
+  margin-top: 25px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: transform 0.3s ease;
+}
+
+.tile-cyan .tile-action { color: var(--accent-cyan); }
+.tile-purple .tile-action { color: var(--accent-purple); }
+.tile-blue .tile-action { color: var(--accent-blue); }
+.tile-pink .tile-action { color: var(--accent-pink); }
+
+.dashboard-tile:hover .tile-action {
+  transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
-  
-  h3 {
-    color: #333;
-    margin-bottom: 20px;
+  .dashboard-tile {
+    min-height: 180px;
+    padding: 24px;
   }
-  
-  .button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  .tile-content h3 {
+    font-size: 17px;
   }
-  
-  .admin-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  .tile-content p {
+    font-size: 12.5px;
   }
-  
-  .admin-button:hover {
-    background-color: #0056b3;
+  .tile-action {
+    margin-top: 16px;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .dashboard-grid {
+    gap: 12px;
+  }
+  .dashboard-tile {
+    min-height: 150px;
+    padding: 18px;
+  }
+  .tile-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 14px;
+  }
+  .tile-content h3 {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .tile-content p {
+    font-size: 12px;
+  }
+  .tile-action {
+    margin-top: 12px;
+    font-size: 11px;
+  }
+  .dashboard-intro h2 {
+    font-size: 20px !important;
+  }
+  .dashboard-intro p {
+    font-size: 13px;
+  }
+}

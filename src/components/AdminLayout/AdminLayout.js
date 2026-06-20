@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FiHome, FiGrid, FiBox, FiShoppingBag, FiTrendingUp, FiLogOut } from 'react-icons/fi';
+import { FiHome, FiGrid, FiBox, FiShoppingBag, FiTrendingUp, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 import './AdminLayout.css';
 
 const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [user, setUser] = useState({ name: 'Administrator', role: 'Admin' });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      if (storedUser) {
+        setUser(storedUser);
+      }
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -23,12 +36,22 @@ const AdminLayout = ({ children }) => {
 
   return (
     <div className="admin-layout-container">
+      {/* Sidebar mobile overlay backdrop */}
+      {isSidebarOpen && (
+        <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>
+      )}
+
       {/* Sidebar navigation */}
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-top">
-          <div className="sidebar-brand">
-            <span className="brand-logo-dot"></span>
-            <span className="brand-name">ABANI ADMIN</span>
+          <div className="sidebar-brand-wrapper">
+            <div className="sidebar-brand">
+              <span className="brand-logo-dot"></span>
+              <span className="brand-name">ABANI <span className="brand-accent">STUDIO</span></span>
+            </div>
+            <button className="close-sidebar-btn" onClick={() => setIsSidebarOpen(false)}>
+              <FiX size={20} />
+            </button>
           </div>
           
           <nav className="sidebar-menu">
@@ -38,7 +61,10 @@ const AdminLayout = ({ children }) => {
                 <div
                   key={item.path}
                   className={`menu-item ${isActive ? 'active' : ''}`}
-                  onClick={() => navigate(item.path)}
+                  onClick={() => {
+                    navigate(item.path);
+                    setIsSidebarOpen(false);
+                  }}
                 >
                   <span className="menu-icon">{item.icon}</span>
                   <span className="menu-label">{item.label}</span>
@@ -59,12 +85,22 @@ const AdminLayout = ({ children }) => {
       {/* Main Content Area */}
       <main className="admin-main-content">
         <header className="admin-top-header">
-          <div className="header-title">
-            {menuItems.find(item => location.pathname.startsWith(item.path.replace('-page', '')))?.label || 'Control Panel'}
+          <div className="header-left">
+            <button className="mobile-toggle-btn" onClick={() => setIsSidebarOpen(true)}>
+              <FiMenu size={22} />
+            </button>
+            <div className="header-title">
+              {menuItems.find(item => location.pathname.startsWith(item.path.replace('-page', '')))?.label || 'Control Panel'}
+            </div>
           </div>
           <div className="header-profile">
-            <div className="profile-avatar">A</div>
-            <span className="profile-name">Administrator</span>
+            <div className="profile-info">
+              <span className="profile-name">{user.name}</span>
+              <span className="profile-role">{user.role || 'Administrator'}</span>
+            </div>
+            <div className="profile-avatar">
+              {user.name ? user.name.charAt(0).toUpperCase() : 'A'}
+            </div>
           </div>
         </header>
         <div className="admin-page-body">

@@ -1,62 +1,57 @@
 import React, { useEffect, useState } from "react";
-
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 import "./ProductPage.css";
 import ProductCard from "../../components/ProductCard/ProductCard";
 
-
 const AllProducts = () => {
   const [product, setProduct] = useState(null);
-  const navigate = useNavigate();
-  const [category, setCategories] = useState([]);
 
   const getAllProduct = async () => {
     try {
-      const product = await axios.get(
+      const productResponse = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/product/get-product`
       );
 
-      console.log(product.data);
-      if (product.data.success) {
-        setProduct(product?.data?.products);
-        toast.success("product get successfully");
+      if (productResponse.data.success) {
+        setProduct(productResponse?.data?.products);
+        toast.success("Products fetched successfully");
       } else {
-        toast.error("something wrong in succesfull try section");
+        toast.error("Failed to load products list");
       }
     } catch (error) {
       console.log(error);
-      toast.error("something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
   useEffect(() => {
     getAllProduct();
   }, []);
-  console.log(product);
 
   return (
-    <>
- 
-        <div className="row">
-         
-          <div className="col-md-9 whole__product__list__container">
-            <div className="text-center heading__product__list">
-              All Product List
-            </div>
+    <div className="products-list-container">
+      <div className="products-list-header">
+        <h2>Active Inventory List</h2>
+        <p>
+          Viewing {product ? product.length : 0} registered products in the store database.
+        </p>
+      </div>
 
-            <div className="all__products__admin__panal">
-              {product?.map((e) => (
-                <>
-                  <ProductCard element={e} />
-                </>
-              ))}
+      <div className="card p-4">
+        <div className="products-grid-admin">
+          {product && product.length > 0 ? (
+            product.map((e) => (
+              <ProductCard key={e._id} element={e} />
+            ))
+          ) : (
+            <div className="no-products-prompt">
+              No products found in the catalog. Create one to get started.
             </div>
-          </div>
+          )}
         </div>
-    
-    </>
+      </div>
+    </div>
   );
 };
 

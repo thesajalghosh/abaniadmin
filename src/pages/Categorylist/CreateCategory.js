@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import "./CategoryList.css";
 import Modal from "../../components/Modal/Modal";
-import { useSelector } from "react-redux";
 import CategoryForm from "../../components/Form/categoryForm";
 
 const CreateCategory = () => {
@@ -127,7 +127,7 @@ const CreateCategory = () => {
   };
 
   return (
-    <div className="container my-4">
+    <div className="category-manager-container">
       {modal && (
         <Modal
           heading={<span>Edit Category</span>}
@@ -149,8 +149,8 @@ const CreateCategory = () => {
           setClose={setDeleteModal}
           body={<div>Are you sure you want to delete this category?</div>}
           footer={
-            <div className="d-flex justify-content-end">
-              <button className="btn btn-secondary mr-2" onClick={() => setDeleteModal(false)}>
+            <div className="d-flex justify-content-end" style={{ gap: '10px' }}>
+              <button className="btn btn-secondary" onClick={() => setDeleteModal(false)}>
                 No
               </button>
               <button className="btn btn-danger" onClick={handleDeleteCall}>
@@ -161,10 +161,10 @@ const CreateCategory = () => {
         />
       )}
 
-      <div className="row">
-        <div className="col-md-12">
-          <div className="card p-3 mb-4">
-            <h2 className="mb-4">Create Category</h2>
+      <div className="category-layout-grid">
+        <div className="category-form-section">
+          <div className="card p-4">
+            <h2 className="section-title">Create Category</h2>
             <CategoryForm
               name={name}
               setValue={setName}
@@ -173,31 +173,40 @@ const CreateCategory = () => {
               photo={photo}
             />
           </div>
-          <h2>Manage Categories</h2>
-          <div className="table-responsive">
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {categories?.map((ele) => (
-                  <tr key={ele._id}>
-                    <td>{ele.name}</td>
-                    <td>
-                      <button className="btn btn-primary mr-2" onClick={() => handleEdit(ele)}>
-                        Edit
-                      </button>
-                      <button className="btn btn-danger" onClick={() => handleDelete(ele)}>
-                        Delete
-                      </button>
-                    </td>
+        </div>
+
+        <div className="category-list-section">
+          <div className="card p-4">
+            <h2 className="section-title">Manage Categories</h2>
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col" style={{ width: '240px' }}>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {categories?.map((ele) => (
+                    <tr key={ele._id}>
+                      <td className="category-name-cell">{ele.name}</td>
+                      <td>
+                        <div className="action-buttons-cell">
+                          <button className="btn btn-primary btn-action-edit" onClick={() => handleEdit(ele)}>
+                            <FiEdit2 size={13} />
+                            <span>Edit</span>
+                          </button>
+                          <button className="btn btn-danger btn-action-delete" onClick={() => handleDelete(ele)}>
+                            <FiTrash2 size={13} />
+                            <span>Delete</span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

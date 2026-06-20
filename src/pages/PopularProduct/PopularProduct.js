@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { FiStar, FiTrash2, FiSquare, FiCheckSquare } from 'react-icons/fi';
 import './PopularProduct.css';
-
 
 const PopularProduct = () => {
     const [activeTab, setActiveTab] = useState('all'); // 'all' or 'popular'
@@ -25,20 +25,19 @@ const PopularProduct = () => {
     const markAsPopular = async () => {
         try {
             const mark_popular = await axios.post(`${process.env.REACT_APP_API}/api/v1/product/mark-popular-product`, { "productIds": selectedProducts })
-            if (mark_popular.success) {
-
+            if (mark_popular.data.success) {
+                toast.success("Products marked as popular");
                 const newPopularProducts = products.filter((product) =>
                     selectedProducts.includes(product._id)
                 );
                 setPopularProducts([...popularProducts, ...newPopularProducts]);
                 setSelectedProducts([]);
+                setActiveTab('popular'); // Switch to popular view
             }
-
-
         } catch (error) {
-
+            console.error("Error marking products popular:", error);
+            toast.error("Failed to mark popular");
         }
-
     };
 
     const getAllProduct = async () => {
@@ -46,118 +45,135 @@ const PopularProduct = () => {
             const product = await axios.get(
                 `${process.env.REACT_APP_API}/api/v1/product/get-product`
             );
-
-            console.log(product.data);
             if (product.data.success) {
                 setProducts(product?.data?.products);
-                toast.success("product get successfully");
             } else {
-                toast.error("something wrong in succesfull try section");
+                toast.error("Something went wrong fetching products");
             }
         } catch (error) {
-
-            toast.error("something went wrong");
+            toast.error("Something went wrong");
         }
     };
 
     const deletePopularProduct = async(id) => {
         try {
             const delete_marked_product = await axios.delete(`${process.env.REACT_APP_API}/api/v1/product/delete-mark-element/${id}`)
-            {
-               if (delete_marked_product.data.success){
-
-                   setPopularProducts(popularProducts.filter((item) => item._id !== id));
-               }
+            if (delete_marked_product.data.success){
+                toast.success("Removed from popular products");
+                setPopularProducts(popularProducts.filter((item) => item._id !== id));
             }
-            
         } catch (error) {
-            
-            toast.error("something went wrong");
+            toast.error("Something went wrong");
         }
     };
 
     const getAllPopularProduct = async () => {
         try {
             const popular_product = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/all-popular-product`)
-            console.log("popular_product", popular_product)
             setPopularProducts(popular_product?.data?.all_popular_product)
         } catch (error) {
-            toast.error("something went wrong");
+            toast.error("Something went wrong");
         }
     }
+
     useEffect(() => {
         getAllProduct()
         getAllPopularProduct()
     }, [activeTab])
+
     return (
-        <div className="popular-product-container">
+        <div className="popular-page-container">
+            <div className="popular-header-title">
+                <h2>Popular Catalog</h2>
+                <p>Highlight specific store items to showcase on the main collections banner.</p>
+            </div>
+
             <div className="tabs">
                 <button
-                    className={activeTab === 'all' ? 'active-tab' : ''}
+                    className={activeTab === 'all' ? 'tab active' : 'tab'}
                     onClick={() => handleTabSwitch('all')}
                 >
-                    All Products
+                    Select From Catalog
                 </button>
                 <button
-                    className={activeTab === 'popular' ? 'active-tab' : ''}
+                    className={activeTab === 'popular' ? 'tab active' : 'tab'}
                     onClick={() => handleTabSwitch('popular')}
                 >
-                    Popular Products
+                    Active Featured List
                 </button>
             </div>
 
             {activeTab === 'all' && (
-                <div className="all-products">
-                    <button
-                        className="mark-popular-btn"
-                        onClick={markAsPopular}
-                        disabled={selectedProducts.length === 0}
-                    >
-                        Mark Popular
-                    </button>
-                    <ul className="product-list">
-                        {products.map((product) => (
-                            <li key={product._id} className="product-item">
-                                <input
-                                    type="checkbox"
-                                    checked={selectedProducts.includes(product._id)}
-                                    onChange={() => handleCheckboxChange(product._id)}
-                                />
-                                <img src={product.url} alt={product.name} className="product-img" />
-                                <div className="product-info">
-                                    <h4>{product.name}</h4>
-                                    <p>{product.description}</p>
-                                    <span className="price">${product.price}</span>
+                <div className="all-products-section">
+                    <div className="action-row-creator">
+                        <button
+                            className="btn btn-primary mark-popular-btn"
+                            onClick={markAsPopular}
+                            disabled={selectedProducts.length === 0}
+                        >
+                            <FiStar size={14} style={{ marginRight: '6px' }} />
+                            Feature Selected ({selectedProducts.length})
+                        </button>
+                    </div>
+
+                    <div className="featured-selection-grid">
+                        {products.map((product) => {
+                            const isSelected = selectedProducts.includes(product._id);
+                            return (
+                                <div
+                                    key={product._id}
+                                    className={`featured-select-card ${isSelected ? 'selected' : ''}`}
+                                    onClick={() => handleCheckboxChange(product._id)}
+                                >
+                                    <div className="select-card-checkbox">
+                                        {isSelected ? (
+                                            <FiCheckSquare size={20} className="checkbox-icon checked" />
+                                        ) : (
+                                            <FiSquare size={20} className="checkbox-icon" />
+                                        )}
+                                    </div>
+                                    <img src={product.url} alt={product.name} className="select-card-img" />
+                                    <div className="select-card-info">
+                                        <h4>{product.name}</h4>
+                                        <p>{product.description}</p>
+                                        <span className="select-card-price">₹{product.price}</span>
+                                    </div>
                                 </div>
-                            </li>
-                        ))}
-                    </ul>
+                            );
+                        })}
+                    </div>
                 </div>
             )}
 
             {activeTab === 'popular' && (
-                <div className="popular-products">
+                <div className="popular-products-section">
                     {popularProducts.length > 0 ? (
-                        <ul className="product-list">
+                        <div className="featured-selection-grid">
                             {popularProducts.map(({ _id, product }) => (
-                                <li key={_id} className="product-item">
-                                    <img src={product.url} alt={product.name} className="product-img" />
-                                    <div className="product-info">
-                                        <h4>{product.name}</h4>
-                                        <p>{product.description}</p>
-                                        <span className="price">${product.price}</span>
+                                <div key={_id} className="featured-select-card active-featured">
+                                    <img src={product?.url} alt={product?.name} className="select-card-img" />
+                                    <div className="select-card-info">
+                                        <h4>{product?.name}</h4>
+                                        <p>{product?.description}</p>
+                                        <span className="select-card-price">₹{product?.price}</span>
                                         <button
-                                            className="delete-btn"
-                                            onClick={() => deletePopularProduct(_id)}
+                                            className="btn btn-danger remove-featured-btn"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                deletePopularProduct(_id);
+                                            }}
                                         >
-                                            Delete
+                                            <FiTrash2 size={13} />
+                                            <span>Remove</span>
                                         </button>
                                     </div>
-                                </li>
+                                </div>
                             ))}
-                        </ul>
+                        </div>
                     ) : (
-                        <p>No popular products yet.</p>
+                        <div className="no-featured-prompt">
+                            No active featured products. Go to "Select From Catalog" tab to showcase items.
+                        </div>
                     )}
                 </div>
             )}
